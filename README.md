@@ -33,6 +33,9 @@ git clone https://github.com/ploi-deploy/roadmap.git
 composer install
 php -r "file_exists('.env') || copy('.env.example', '.env');"
 php artisan key:generate
+php artisan storage:link
+npm ci
+npm run production
 ```
 
 Now edit your `.env` file and set up the database credentials, including the app name you want.
@@ -43,14 +46,15 @@ As well as the timezone can be set with `APP_TIMEZONE`, for example: `APP_TIMEZO
 Now run the following:
 
 ```
-php artisan roadmap:install
+php artisan migrate --force
+php artisan make:filament-user
 ```
 
-And login with the credentials you've provided, the user you've created will automatically be admin.
+And login with the credentials you've provided. If you want to be admin user, change the `role` column for your user to `admin`.
 
 ## Deployment
 
-To manage your servers and sites, we recommend using [Ploi.io](https://ploi.io/?ref=) to speed up things, obviously you're free to choose however you'd like to deploy this piece of software 💙
+To manage your servers and sites, we recommend using [Ploi.io](https://ploi.io/?ref=roadmap-github) to speed up things, obviously you're free to choose however you'd like to deploy this piece of software 💙
 
 That being said, here's an deployment script example:
 
@@ -64,7 +68,7 @@ php artisan route:cache
 php artisan view:clear
 php artisan migrate --force
 
-npm install
+npm ci
 npm run production
 
 echo "🚀 Application deployed!"
@@ -209,7 +213,7 @@ Composer Install:
 
 NPM Install:
 
-`docker exec -it roadmap npm install`
+`docker exec -it roadmap npm ci`
 
 Running artisan commands:
 
